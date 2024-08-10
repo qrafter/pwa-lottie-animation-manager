@@ -12,14 +12,15 @@ interface UserAnimationsState {
 }
 
 interface UserAnimationsActions {
-  fetchAnimations: (userId: string) => Promise<void>;
+  getAnimations: (userId: string) => Promise<UserAnimation[]>;
+  getAnimation: (userId: string, animationId: string) => Promise<UserAnimation | null>;
   addAnimation: (
     userId: string,
     name: string,
     animation: Omit<UserAnimation, "id" | "userId" | "createdAt" | "updatedAt">
   ) => Promise<void>;
   updateAnimation: (id: string, updates: Partial<UserAnimation>) => Promise<void>;
-  deleteAnimation: (id: string) => Promise<void>;
+  deleteAnimation: (userId: string, animationId: string) => Promise<void>;
   setUploadedAnimation: (animation: Animation | null) => void;
 }
 
@@ -29,13 +30,30 @@ export const useUserAnimationsStore = create<UserAnimationsState & UserAnimation
   error: null,
   uploadedAnimation: null,
 
-  fetchAnimations: async (userId: string) => {
+  getAnimations: async (userId: string) => {
     set({ loading: true, error: null });
     try {
       const animations = await db.userAnimations.where({ userId }).toArray();
-      set({ animations, loading: false });
+      set({ loading: false });
+      return animations;
     } catch (error) {
       set({ error: "Failed to fetch animations", loading: false });
+      return [];
+    }
+  },
+
+  getAnimation: async (userId, animationId) => {
+    try {
+      const animation = await db.userAnimations.get({ userId, id: animationId });
+      if (animation) {
+        set(state => ({
+          animations: [...state.animations.filter(a => a.id !== animationId), animation]
+        }));
+      }
+      return animation || null;
+    } catch (error) {
+      console.error("Failed to fetch animation:", error);
+      return null;
     }
   },
 
@@ -82,10 +100,10 @@ export const useUserAnimationsStore = create<UserAnimationsState & UserAnimation
     });
   },
 
-  deleteAnimation: async (id) => {
+  deleteAnimation: async (userId, animationId) => {
     const { animations } = get();
-    await db.userAnimations.delete(id);
-    set({ animations: animations.filter((a) => a.id !== id) });
+    await db.userAnimations.delete({ userId, id: animationId });
+    set({ animations: animations.filter((a) => a.id !== animationId) });
   },
 
   setUploadedAnimation: (animation: Animation | null) => {

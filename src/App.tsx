@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import { Suspense } from "react";
 import LazyLoadingSkeleton from "@/components/LazyLoadingSkeleton";
 
+const UserAnimation = React.lazy(() => import("@/pages/UserAnimation"));
 const UserAnimations = React.lazy(() => import("@/pages/UserAnimations"));
 const UploadAnimation = React.lazy(() => import("@/pages/UploadAnimation"));
 
@@ -38,6 +39,22 @@ function App() {
               element={
                 <Suspense fallback={<LazyLoadingSkeleton />}>
                   <UserAnimations />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/animations"
+              element={
+                <Suspense fallback={<LazyLoadingSkeleton />}>
+                  <UserAnimations />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/animations/:id"
+              element={
+                <Suspense fallback={<LazyLoadingSkeleton />}>
+                  <UserAnimation />
                 </Suspense>
               }
             />

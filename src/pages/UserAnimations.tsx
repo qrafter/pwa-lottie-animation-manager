@@ -1,26 +1,25 @@
+import { lazy, useCallback, useEffect, useState } from "react";
 import { useUserAnimationsStore } from "@/stores/userAnimationStore";
-import { lazy, useCallback, useEffect } from "react";
+import { UserAnimation } from "@/types/userAnimation";
 
-const LazyLoadingSkeleton = lazy(
-  () => import("@/components/LazyLoadingSkeleton")
-);
-const EmptyUserAnimation = lazy(
-  () => import("@/components/EmptyUserAnimation")
-);
+const LazyLoadingSkeleton = lazy(() => import("@/components/LazyLoadingSkeleton"));
+const EmptyUserAnimation = lazy(() => import("@/components/EmptyUserAnimation"));
 const UserAnimationGrid = lazy(() => import("@/components/UserAnimationGrid"));
-
+// TODO: Replace with actual user from auth
 const user = {
-  id: "1",
+  id: '1'
 };
 
 function UserAnimations() {
-  const { animations, loading, fetchAnimations } = useUserAnimationsStore();
+  const { loading, error, getAnimations } = useUserAnimationsStore();
+  const [animations, setAnimations] = useState<UserAnimation[]>([]);
 
-  const memoizedFetchAnimations = useCallback(() => {
+  const memoizedFetchAnimations = useCallback(async () => {
     if (user) {
-      fetchAnimations(user.id);
+      const fetchedAnimations = await getAnimations(user.id);
+      setAnimations(fetchedAnimations);
     }
-  }, [fetchAnimations]);
+  }, [getAnimations]);
 
   useEffect(() => {
     memoizedFetchAnimations();
@@ -28,6 +27,10 @@ function UserAnimations() {
 
   if (loading) {
     return <LazyLoadingSkeleton />;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
   }
 
   if (animations.length === 0) {

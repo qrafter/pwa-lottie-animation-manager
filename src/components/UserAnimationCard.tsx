@@ -4,17 +4,22 @@ import Lottie from "react-lottie-player";
 
 type UserAnimationCardProps = {
   animation: UserAnimation;
+  onClick?: (animationId: string) => void;
 };
 
 const UserAnimationCard = memo(function AnimationCard({
   animation,
+  onClick,
 }: UserAnimationCardProps) {
   const handleLottieError = useCallback((error: unknown) => {
     console.error("Lottie animation failed to load:", error);
   }, []);
 
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:border-black hover:cursor-pointer border-solid border">
+    <div
+      className="bg-white rounded-2xl shadow-md overflow-hidden hover:border-black hover:cursor-pointer border-solid border"
+      onClick={() => onClick?.(animation.id)}
+    >
       <div className="relative h-40">
         {animation.jsonContent && (
           <Lottie

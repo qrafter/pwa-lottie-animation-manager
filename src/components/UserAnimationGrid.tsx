@@ -33,15 +33,20 @@ export default function UserAnimationList(props: UserAnimationListProps) {
     }
   };
 
+
   const animationGrid = useMemo(
     () => (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {animations.map((animation) => (
-          <UserAnimationCard key={animation.id} animation={animation} />
+          <UserAnimationCard
+            key={animation.id}
+            animation={animation}
+            onClick={() => navigate(`/animations/${animation.id}`)}
+          />
         ))}
       </div>
     ),
-    [animations]
+    [animations, navigate]
   );
 
   return (
