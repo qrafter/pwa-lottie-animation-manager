@@ -12,7 +12,7 @@ const UploadAnimation: React.FC = () => {
       <Button
         variant="ghost"
         className="-ml-5 mb-2"
-        onClick={() => navigate(-1)}
+        onClick={() => navigate("/animations")}
       >
         <ArrowLeft className="w-6" /> &nbsp; Back
       </Button>

@@ -5,6 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 import UserAnimationCard from "@/components/UserAnimationCard";
 import { UserAnimation } from "@/types/userAnimation";
 import { UploadIcon } from "lucide-react";
+import { Input } from "./ui/input";
 
 type UserAnimationListProps = {
   animations: UserAnimation[];
@@ -48,9 +49,11 @@ export default function UserAnimationList(props: UserAnimationListProps) {
     ),
     [animations, navigate]
   );
+  
 
   return (
     <div className="flex flex-col gap-4">
+      
       <h2 className="text-2xl font-bold">Recently Uploaded</h2>
       <div>
         <input
@@ -67,6 +70,9 @@ export default function UserAnimationList(props: UserAnimationListProps) {
           <UploadIcon className="w-5" />{" "}
           <span className="">Upload Animations</span>
         </label>
+      </div>
+      <div className="max-w-sm">
+        <Input placeholder="Search animations"/>
       </div>
       {animationGrid}
     </div>

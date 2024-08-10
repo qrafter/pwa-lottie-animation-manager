@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useUserAnimationsStore } from "@/stores/userAnimationStore";
 import { Animation } from "@lottiefiles/lottie-types";
@@ -11,14 +11,8 @@ type LottieUploaderProps = {
 };
 
 const LottieUploader: React.FC<LottieUploaderProps> = () => {
-  const { uploadedAnimation, setUploadedAnimation, addAnimation } = useUserAnimationsStore();
+  const { uploadedAnimation, addAnimation } = useUserAnimationsStore();
   const [animationName, setAnimationName] = useState("");
-
-  useEffect(() => {
-    return () => {
-      setUploadedAnimation(null);
-    };
-  }, [setUploadedAnimation]);
 
   const handleSaveAnimation = async () => {
     if (!uploadedAnimation) {

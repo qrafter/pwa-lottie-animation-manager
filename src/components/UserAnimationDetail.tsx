@@ -9,7 +9,7 @@ import { Animation, Layer } from "@lottiefiles/lottie-types";
 import { Input } from "./ui/input";
 import LottieMetadata from "./LottieMetadata";
 
-type LottieUploaderProps = {
+type UserAnimationDetailsProps = {
   initialAnimationData?: Animation;
 };
 
@@ -80,19 +80,14 @@ const useAnimationData = (initialData?: Animation | null) => {
   };
 };
 
-const LottieUploader: React.FC<LottieUploaderProps> = () => {
-  const { uploadedAnimation, setUploadedAnimation } = useUserAnimationsStore();
+const UserAnimationDetails: React.FC<UserAnimationDetailsProps> = () => {
+  const { uploadedAnimation } = useUserAnimationsStore();
   const { animationData, animationName, setAnimationName, handleFileUpload } =
     useAnimationData(uploadedAnimation);
   const { controls, togglePlay, toggleLoop, toggleDirection, setSpeed } =
     useLottieControls();
   const { addAnimation } = useUserAnimationsStore();
 
-  useEffect(() => {
-    return () => {
-      setUploadedAnimation(null);
-    };
-  }, [setUploadedAnimation]);
 
   const handleSaveAnimation = async () => {
     // if (!user || !animationData) {
@@ -232,4 +227,4 @@ const LottieUploader: React.FC<LottieUploaderProps> = () => {
   );
 };
 
-export default LottieUploader;
+export default UserAnimationDetails;
