@@ -11,9 +11,7 @@ import {
 registerSW();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
       <Router>
         <App />
       </Router>
-  </React.StrictMode>
 );

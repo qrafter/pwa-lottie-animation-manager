@@ -1,8 +1,9 @@
+import React from "react";
+
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 import { Routes, Route } from "react-router-dom";
 import { Suspense } from "react";
-import LazyLoadingSkeleton from "./components/LazyLoadingSkeleton";
-import React from "react";
+import LazyLoadingSkeleton from "@/components/LazyLoadingSkeleton";
 
 const UserAnimations = React.lazy(() => import("@/pages/UserAnimations"));
 
