@@ -4,6 +4,7 @@ import { useUserAnimationsStore } from "@/stores/userAnimationStore";
 import { Animation } from "@lottiefiles/lottie-types";
 import { Input } from "@/components/ui/input";
 import LottieAnimationViewer from "@/components/LottieAnimationViewer";
+import { Navigate } from "react-router-dom";
 
 type LottieUploaderProps = {
   initialAnimationData?: Animation;
@@ -42,6 +43,12 @@ const LottieUploader: React.FC<LottieUploaderProps> = () => {
       alert((error as Error)?.message || "Failed to save animation");
     }
   };
+
+  if (!uploadedAnimation) {
+    return (
+      <Navigate to="/animations" replace />
+    );
+  }
 
   return (
     <div className="space-y-4">

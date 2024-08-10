@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useUserAnimationsStore } from '@/stores/userAnimationStore';
-import LottieAnimationViewer from '@/components/LottieAnimationViewer';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, Trash2 } from 'lucide-react';
-import { UserAnimation } from '@/types/userAnimation';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useUserAnimationsStore } from "@/stores/userAnimationStore";
+import LottieAnimationViewer from "@/components/LottieAnimationViewer";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Trash2 } from "lucide-react";
+import { UserAnimation } from "@/types/userAnimation";
 
 const UserAnimationPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,21 +17,21 @@ const UserAnimationPage: React.FC = () => {
   useEffect(() => {
     const fetchAnimation = async () => {
       if (!id) {
-        setError('No animation ID provided');
+        setError("No animation ID provided");
         setLoading(false);
         return;
       }
 
       try {
         // TODO: Replace '1' with actual userId from auth
-        const fetchedAnimation = await getAnimation('1', id);
+        const fetchedAnimation = await getAnimation("1", id);
         if (fetchedAnimation) {
           setAnimation(fetchedAnimation);
         } else {
-          setError('Animation not found');
+          setError("Animation not found");
         }
       } catch (err) {
-        setError('Failed to fetch animation');
+        setError("Failed to fetch animation");
         console.error(err);
       } finally {
         setLoading(false);
@@ -44,14 +44,14 @@ const UserAnimationPage: React.FC = () => {
   const handleDelete = async () => {
     if (!animation) return;
 
-    if (window.confirm('Are you sure you want to delete this animation?')) {
+    if (window.confirm("Are you sure you want to delete this animation?")) {
       try {
         // TODO: Replace '1' with actual userId from auth
-        await deleteAnimation('1', animation.id);
-        navigate('/animations');
+        await deleteAnimation("1", animation.id);
+        navigate("/animations");
       } catch (err) {
-        console.error('Failed to delete animation:', err);
-        alert('Failed to delete animation. Please try again.');
+        console.error("Failed to delete animation:", err);
+        alert("Failed to delete animation. Please try again.");
       }
     }
   };
@@ -67,9 +67,12 @@ const UserAnimationPage: React.FC = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
-        <Button variant="ghost" onClick={() => navigate('/animations')}>
-          <ArrowLeft className="mr-2" size={16} />
-          Back to Animations
+        <Button
+          variant="ghost"
+          className="-ml-5 mb-2"
+          onClick={() => navigate("/animations")}
+        >
+          <ArrowLeft className="w-6" /> &nbsp; Back
         </Button>
         <Button variant="destructive" onClick={handleDelete}>
           <Trash2 className="mr-2" size={16} />
