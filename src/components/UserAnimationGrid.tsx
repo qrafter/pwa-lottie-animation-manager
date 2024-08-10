@@ -4,17 +4,16 @@ import { useUserAnimationsStore } from "@/stores/userAnimationStore";
 import { buttonVariants } from "@/components/ui/button";
 import UserAnimationCard from "@/components/UserAnimationCard";
 import { UserAnimation } from "@/types/userAnimation";
+import { UploadIcon } from "lucide-react";
 
 type UserAnimationListProps = {
-  animations: UserAnimation[]
-}
+  animations: UserAnimation[];
+};
 
 export default function UserAnimationList(props: UserAnimationListProps) {
-  const { animations } = props
-  const {  setUploadedAnimation } =
-    useUserAnimationsStore();
+  const { animations } = props;
+  const { setUploadedAnimation } = useUserAnimationsStore();
   const navigate = useNavigate();
-
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -44,11 +43,10 @@ export default function UserAnimationList(props: UserAnimationListProps) {
     ),
     [animations]
   );
-  
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-2xl font-bold">Your Uploaded Animations</h2>
+      <h2 className="text-2xl font-bold">Recently Uploaded</h2>
       <div>
         <input
           type="file"
@@ -57,8 +55,12 @@ export default function UserAnimationList(props: UserAnimationListProps) {
           className="hidden"
           id="lottie-upload"
         />
-        <label htmlFor="lottie-upload" className={buttonVariants()}>
-          <span className="">Add new animation</span>
+        <label
+          htmlFor="lottie-upload"
+          className={buttonVariants().concat("flex flex-row gap-4")}
+        >
+          <UploadIcon className="w-5" />{" "}
+          <span className="">Upload Animations</span>
         </label>
       </div>
       {animationGrid}

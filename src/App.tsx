@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import LazyLoadingSkeleton from "@/components/LazyLoadingSkeleton";
 
 const UserAnimations = React.lazy(() => import("@/pages/UserAnimations"));
+const UploadAnimation = React.lazy(() => import("@/pages/UploadAnimation"));
 
 function App() {
   const isOnline = useOnlineStatus();
@@ -24,36 +25,7 @@ function App() {
               <span>{isOnline ? "Online" : "Offline"}</span>
             </div>
 
-            <nav>
-              {/* <ul className="flex space-x-4">
-                  <li>
-                    <Link
-                      to="/animations"
-                      className="text-blue-600 hover:text-blue-800"
-                    >
-                      Dashboard
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/featured"
-                      className="text-blue-600 hover:text-blue-800"
-                    >
-                      Featured
-                    </Link>
-                  </li>
-                </ul> */}
-            </nav>
-
-            {/* {user ? (
-              <Button variant="outline" onClick={logout}>
-                Logout
-              </Button>
-            ) : (
-              <Link to="/login">
-                <Button variant="outline">Login</Button>
-              </Link>
-            )} */}
+            <nav></nav>
           </div>
         </div>
       </header>
@@ -69,7 +41,16 @@ function App() {
                 </Suspense>
               }
             />
+            <Route
+              path="/upload"
+              element={
+                <Suspense fallback={<LazyLoadingSkeleton />}>
+                  <UploadAnimation />
+                </Suspense>
+              }
+            />
           </Routes>
+
           {/* <Routes>
             <Route
               path="/"
