@@ -20,7 +20,7 @@ const UserAnimationCard = memo(function AnimationCard({
       className="bg-white rounded-2xl shadow-md overflow-hidden hover:border-black hover:cursor-pointer border-solid border"
       onClick={() => onClick?.(animation.id)}
     >
-      <div className="relative h-40">
+      <div className="relative h-40 p-4">
         {animation.jsonContent && (
           <Lottie
             animationData={animation.jsonContent}

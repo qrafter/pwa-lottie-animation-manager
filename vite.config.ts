@@ -13,17 +13,6 @@ export default defineConfig({
         navigateFallback: '/offline.html',
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/graphql\.lottiefiles\.com\/2022-08/,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'api-cache',
-              networkTimeoutSeconds: 5,
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          },
-          {
             urlPattern: /\.(png|jpg|jpeg|svg|gif)$/,
             handler: 'CacheFirst',
             options: {

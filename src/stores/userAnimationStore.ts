@@ -101,9 +101,9 @@ export const useUserAnimationsStore = create<UserAnimationsState & UserAnimation
   },
 
   deleteAnimation: async (userId, animationId) => {
-    const { animations } = get();
-    await db.userAnimations.delete({ userId, id: animationId });
-    set({ animations: animations.filter((a) => a.id !== animationId) });
+    await db.userAnimations.delete(animationId);
+    const animations = await db.userAnimations.where({ userId }).toArray();
+    set({ animations });
   },
 
   setUploadedAnimation: (animation: Animation | null) => {

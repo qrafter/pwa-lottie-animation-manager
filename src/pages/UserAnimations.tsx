@@ -24,13 +24,14 @@ function UserAnimations() {
   useEffect(() => {
     memoizedFetchAnimations();
   }, [memoizedFetchAnimations]);
-
-  if (loading) {
-    return <LazyLoadingSkeleton />;
-  }
+  
 
   if (error) {
     return <div>Error: {error}</div>;
+  }
+
+  if (loading) {
+    return <LazyLoadingSkeleton />;
   }
 
   if (animations.length === 0) {
