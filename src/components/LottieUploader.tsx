@@ -4,7 +4,7 @@ import { useUserAnimationsStore } from "@/stores/userAnimationStore";
 import { Animation } from "@lottiefiles/lottie-types";
 import { Input } from "@/components/ui/input";
 import LottieAnimationViewer from "@/components/LottieAnimationViewer";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 type LottieUploaderProps = {
   initialAnimationData?: Animation;
@@ -13,6 +13,7 @@ type LottieUploaderProps = {
 const LottieUploader: React.FC<LottieUploaderProps> = () => {
   const { uploadedAnimation, addAnimation } = useUserAnimationsStore();
   const [animationName, setAnimationName] = useState("");
+  const navigate = useNavigate()
 
   const handleSaveAnimation = async () => {
     if (!uploadedAnimation) {
@@ -33,6 +34,7 @@ const LottieUploader: React.FC<LottieUploaderProps> = () => {
         _status: "created",
       });
       alert("Animation saved successfully!");
+      navigate("/animations");
     } catch (error: unknown) {
       alert((error as Error)?.message || "Failed to save animation");
     }
