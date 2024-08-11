@@ -5,13 +5,12 @@ import { buttonVariants } from "@/components/ui/button";
 import UserAnimationCard from "@/components/UserAnimationCard";
 import { UserAnimation } from "@/types/userAnimation";
 import { UploadIcon } from "lucide-react";
-import { Input } from "./ui/input";
 
-type UserAnimationListProps = {
+type UserAnimationGridProps = {
   animations: UserAnimation[];
 };
 
-export default function UserAnimationList(props: UserAnimationListProps) {
+export default function UserAnimationGrid(props: UserAnimationGridProps) {
   const { animations } = props;
   const { setUploadedAnimation } = useUserAnimationsStore();
   const navigate = useNavigate();
@@ -71,9 +70,7 @@ export default function UserAnimationList(props: UserAnimationListProps) {
           <span className="">Upload Animations</span>
         </label>
       </div>
-      <div className="max-w-sm">
-        <Input placeholder="Search animations"/>
-      </div>
+      
       {animationGrid}
     </div>
   );
