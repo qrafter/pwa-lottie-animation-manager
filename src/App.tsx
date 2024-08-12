@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Suspense } from "react";
 import LazyLoadingSkeleton from "@/components/LazyLoadingSkeleton";
 import { useUserStore } from "./stores/useStore";
