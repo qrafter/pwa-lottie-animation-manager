@@ -153,7 +153,7 @@ export const useUserStore = create<UserState & UserActions>((set, get) => ({
         await db.userAnimations
           .where('userId').equals(localUser.localUserId)
           .modify((animation: UserAnimation) => {
-            animation._status = 'modified';
+            animation._status = 'MODIFIED';
             animation._lastSyncedAt = new Date().toISOString();
           });
       });
