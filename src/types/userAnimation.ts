@@ -2,7 +2,7 @@ import { Animation } from "@lottiefiles/lottie-types";
 
 export interface UserAnimation {
   id: string;
-  userId: string; // This will come from useAuth
+  userId: string;
   name: string;
   description?: string;
   jsonContent: Animation;
