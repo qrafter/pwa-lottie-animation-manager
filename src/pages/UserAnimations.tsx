@@ -4,16 +4,13 @@ import { UserAnimation } from "@/types/userAnimation";
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks/useDebounce";
 import { db } from "@/db/indexedDB";
+import { useUserStore } from "../stores/useStore";
 
 const LazyLoadingSkeleton = lazy(() => import("@/components/LazyLoadingSkeleton"));
 const EmptyUserAnimation = lazy(() => import("@/components/EmptyUserAnimation"));
 const UserAnimationGrid = lazy(() => import("@/components/UserAnimationGrid"));
 const NoSearchResults = lazy(() => import("@/components/NoSearchResults"));
 
-// TODO: Replace with actual user from auth
-const user = {
-  id: '1'
-};
 
 function UserAnimations() {
   const { loading, error, getAnimations } = useUserAnimationsStore();
@@ -21,14 +18,15 @@ function UserAnimations() {
   const [allAnimations, setAllAnimations] = useState<UserAnimation[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const { localUser: user } = useUserStore();
 
   const memoizedFetchAnimations = useCallback(async () => {
     if (user) {
-      const fetchedAnimations = await getAnimations(user.id);
+      const fetchedAnimations = await getAnimations(user.localUserId);
       setAnimations(fetchedAnimations);
       setAllAnimations(fetchedAnimations);
     }
-  }, [getAnimations]);
+  }, [getAnimations, user]);
 
   useEffect(() => {
     memoizedFetchAnimations();
@@ -41,10 +39,10 @@ function UserAnimations() {
 
     const lowerTerm = term.toLowerCase();
     return await db.userAnimations
-      .where('userId').equals(user.id)
+      .where('userId').equals(user!.localUserId)
       .and(animation => animation.name.toLowerCase().includes(lowerTerm))
       .toArray();
-  }, [allAnimations]);
+  }, [allAnimations, user]);
 
   useEffect(() => {
     const performSearch = async () => {

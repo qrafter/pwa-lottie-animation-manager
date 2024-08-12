@@ -5,6 +5,7 @@ import LottieAnimationViewer from "@/components/LottieAnimationViewer";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Trash2 } from "lucide-react";
 import { UserAnimation } from "@/types/userAnimation";
+import { useUserStore } from "../stores/useStore";
 
 const UserAnimationPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +14,7 @@ const UserAnimationPage: React.FC = () => {
   const [animation, setAnimation] = useState<UserAnimation | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { localUser } = useUserStore();
 
   useEffect(() => {
     const fetchAnimation = async () => {
@@ -23,8 +25,7 @@ const UserAnimationPage: React.FC = () => {
       }
 
       try {
-        // TODO: Replace '1' with actual userId from auth
-        const fetchedAnimation = await getAnimation("1", id);
+        const fetchedAnimation = await getAnimation(localUser!.localUserId, id);
         if (fetchedAnimation) {
           setAnimation(fetchedAnimation);
         } else {
@@ -39,7 +40,7 @@ const UserAnimationPage: React.FC = () => {
     };
 
     fetchAnimation();
-  }, [id, getAnimation]);
+  }, [id, getAnimation, localUser]);
 
   const handleDelete = async () => {
     if (!animation) return;
@@ -47,7 +48,7 @@ const UserAnimationPage: React.FC = () => {
     if (window.confirm("Are you sure you want to delete this animation?")) {
       try {
         // TODO: Replace '1' with actual userId from auth
-        await deleteAnimation("1", animation.id);
+        await deleteAnimation(localUser!.localUserId, animation.id);
         navigate("/animations");
       } catch (err) {
         console.error("Failed to delete animation:", err);

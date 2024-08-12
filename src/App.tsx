@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import { Suspense } from "react";
 import LazyLoadingSkeleton from "@/components/LazyLoadingSkeleton";
 import { useUserStore } from "./stores/useStore";
+import { Button } from "./components/ui/button";
+import { AuthModal } from "./components/AuthModal";
 
 const UserAnimation = React.lazy(() => import("@/pages/UserAnimation"));
 const UserAnimations = React.lazy(() => import("@/pages/UserAnimations"));
@@ -12,17 +14,39 @@ const UploadAnimation = React.lazy(() => import("@/pages/UploadAnimation"));
 
 function App() {
   const isOnline = useOnlineStatus();
+  const { localUser } = useUserStore();
+  const [isSigningOut, setIsSigningOut] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  const { initializeLocalUser, isInitialized } = useUserStore();
+  const { initializeLocalUser, isInitialized, signOut } = useUserStore();
 
   useEffect(() => {
     initializeLocalUser();
-  }, [initializeLocalUser]);
+  }, []);
+
+  const handleSignout = async () => {
+    setIsSigningOut(true);
+    try {
+      await signOut();
+      // Optionally, redirect to home page or login page after logout
+      // history.push('/');
+    } catch (error) {
+      console.error("Logout failed:", error);
+      // Optionally, show an error message to the user
+    } finally {
+      setIsSigningOut(false);
+    }
+  };
+
+  const handleSignIn = () => {
+    setIsAuthModalOpen(true);
+  }
 
   if (!isInitialized) {
     return <LazyLoadingSkeleton />;
   }
 
+  console.log(localUser);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -38,7 +62,15 @@ function App() {
               <span>{isOnline ? "Online" : "Offline"}</span>
             </div>
 
-            <nav></nav>
+            <nav>
+              {localUser?.onlineUserId ? (
+                <Button variant="outline" onClick={handleSignout}>
+                  {isSigningOut ? "Signing out..." : "Sign Out"}
+                </Button>
+              ) : (
+                <Button variant="outline" onClick={handleSignIn}>Sign In</Button>
+              )}
+            </nav>
           </div>
         </div>
       </header>
@@ -79,51 +111,6 @@ function App() {
               }
             />
           </Routes>
-
-          {/* <Routes>
-            <Route
-              path="/"
-              element={
-                <Suspense fallback={<LazyLoadingSkeleton />}>
-                  <UserAnimations />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/animations"
-              element={
-                <Suspense fallback={<LazyLoadingSkeleton />}>
-                  <UserAnimations />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/upload"
-              element={
-                <Suspense fallback={<LazyLoadingSkeleton />}>
-                  <UploadAnimation />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/featured"
-              element={
-                <Suspense fallback={<LazyLoadingSkeleton />}>
-                  <FeaturedAnimations />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/upload"
-              element={
-                <Suspense fallback={<LazyLoadingSkeleton />}>
-                  <UploadAnimation />
-                </Suspense>
-              }
-            />
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<Navigate to="/animations" replace />} />
-          </Routes> */}
         </div>
       </main>
 
@@ -132,6 +119,10 @@ function App() {
           © 2023 Lottie Animation Manager
         </div>
       </footer>
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
     </div>
   );
 }

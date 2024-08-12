@@ -4,19 +4,23 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useUserStore } from "../stores/useStore";
 
-export function SignInForm() {
+type SignUpFormProps = {
+  onSuccess?: () => void;
+}
+
+export function SignInForm({ onSuccess }: SignUpFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  const { signIn } = useUserStore();
+  const { signIn, error } = useUserStore();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Prevent the default form submission
     try {
       setIsLoggingIn(true);
-      signIn(email, password);
-    } catch (error) {
-      alert((error as Error)?.message);
+      await signIn(email, password);
+      onSuccess?.();
     } finally {
       setIsLoggingIn(false);
     }
@@ -46,8 +50,9 @@ export function SignInForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <Button type="submit" className="w-full mt-4">
-        Sign in
+      <p className="text-red-500">{(error)}</p>
+      <Button type="submit" className="w-full mt-4" disabled={isLoggingIn}>
+        {isLoggingIn ? "Signing in..." : "Sign in"}
       </Button>
     </form>
   );

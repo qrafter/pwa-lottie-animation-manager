@@ -9,6 +9,6 @@ export interface UserAnimation {
   createdAt: string;
   updatedAt: string;
   tags?: string[];
-  _status: "synced" | "created" | "updated" | "deleted";
+  _status: "synced" | "created" | "updated" | "deleted" | "modified";
   _lastSyncedAt?: string;
 }

@@ -8,6 +8,7 @@ import { useUserAnimationsStore } from "@/stores/userAnimationStore";
 import { Animation, Layer } from "@lottiefiles/lottie-types";
 import { Input } from "./ui/input";
 import LottieMetadata from "./LottieMetadata";
+import { useUserStore } from "../stores/useStore";
 
 type UserAnimationDetailsProps = {
   initialAnimationData?: Animation;
@@ -87,6 +88,7 @@ const UserAnimationDetails: React.FC<UserAnimationDetailsProps> = () => {
   const { controls, togglePlay, toggleLoop, toggleDirection, setSpeed } =
     useLottieControls();
   const { addAnimation } = useUserAnimationsStore();
+  const { localUser } = useUserStore();
 
 
   const handleSaveAnimation = async () => {
@@ -110,10 +112,13 @@ const UserAnimationDetails: React.FC<UserAnimationDetailsProps> = () => {
 
     try {
       // TODO: Update userId
-      await addAnimation("1", animationName, {
+      if (!localUser) {
+        alert("No local user found");
+        return;
+      }
+      await addAnimation(localUser!.localUserId, animationName, {
         name: animationName.trim(),
         jsonContent: animationData,
-        _status: "created",
       });
       alert("Animation saved successfully!");
     } catch (error: unknown) {

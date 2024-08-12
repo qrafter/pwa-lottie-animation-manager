@@ -5,6 +5,7 @@ import { Animation } from "@lottiefiles/lottie-types";
 import { Input } from "@/components/ui/input";
 import LottieAnimationViewer from "@/components/LottieAnimationViewer";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useUserStore } from "../stores/useStore";
 
 type LottieUploaderProps = {
   initialAnimationData?: Animation;
@@ -13,6 +14,7 @@ type LottieUploaderProps = {
 const LottieUploader: React.FC<LottieUploaderProps> = () => {
   const { uploadedAnimation, addAnimation } = useUserAnimationsStore();
   const [animationName, setAnimationName] = useState("");
+  const { localUser } = useUserStore();
   const navigate = useNavigate()
 
   const handleSaveAnimation = async () => {
@@ -28,10 +30,13 @@ const LottieUploader: React.FC<LottieUploaderProps> = () => {
 
     try {
       // TODO: Update userId
-      await addAnimation("1", animationName, {
+      if (!localUser) {
+        alert("No local user found");
+        return
+      }
+      await addAnimation(localUser!.localUserId, animationName, {
         name: animationName.trim(),
         jsonContent: uploadedAnimation,
-        _status: "created",
       });
       alert("Animation saved successfully!");
       navigate("/animations");
