@@ -1,12 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useUserAnimationsStore } from "@/stores/userAnimationStore";
-import { buttonVariants } from "@/components/ui/button";
-import React from "react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import React, { useState } from "react";
+import { SyncModal } from "./SyncModal";
+import { RefreshCcw } from "lucide-react";
 
 function EmptyUserAnimation() {
 
   const { setUploadedAnimation } = useUserAnimationsStore();
   const navigate = useNavigate();
+  const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -46,7 +49,17 @@ function EmptyUserAnimation() {
         <label htmlFor="lottie-upload" className={buttonVariants()}>
           <span className="">Upload your animation</span>
         </label>
+        <div className="mt-10">
+          <h1 className="text-gray-600 ">If you have an existing account, you can sign in and sync your animations</h1>
+        </div>
+        <Button variant={"outline"} className="flex flex-row gap-4" onClick={() => setIsSyncModalOpen(true)}>
+          <RefreshCcw className="w-5" /> Sync Animations
+        </Button>
       </div>
+      <SyncModal
+        isOpen={isSyncModalOpen}
+        onClose={() => setIsSyncModalOpen(false)}
+      />
     </div>
   );
 }
