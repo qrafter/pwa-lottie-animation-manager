@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 import { Routes, Route } from "react-router-dom";
 import { Suspense } from "react";
 import LazyLoadingSkeleton from "@/components/LazyLoadingSkeleton";
+import { useUserStore } from "./stores/useStore";
 
 const UserAnimation = React.lazy(() => import("@/pages/UserAnimation"));
 const UserAnimations = React.lazy(() => import("@/pages/UserAnimations"));
@@ -11,6 +12,17 @@ const UploadAnimation = React.lazy(() => import("@/pages/UploadAnimation"));
 
 function App() {
   const isOnline = useOnlineStatus();
+
+  const { initializeLocalUser, isInitialized } = useUserStore();
+
+  useEffect(() => {
+    initializeLocalUser();
+  }, [initializeLocalUser]);
+
+  if (!isInitialized) {
+    return <LazyLoadingSkeleton />;
+  }
+
 
   return (
     <div className="flex flex-col min-h-screen">

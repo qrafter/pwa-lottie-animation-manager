@@ -2,9 +2,10 @@ import Dexie, { Table } from "dexie";
 import { UserAnimation } from "@/types/userAnimation";
 
 export interface LocalUser {
-  id: string;
+  localUserId: string;
   email?: string;
-  supabaseId?: string;
+  onlineUserId?: string;
+  lastSynced?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -17,7 +18,7 @@ class LottieAnimationManagerDatabase extends Dexie {
     super("LottieAnimationManagerDatabase");
     this.version(2).stores({
       userAnimations: "id, userId, name, createdAt, updatedAt, _status, _lastSyncedAt",
-      users: "id, email, supabaseId"
+      users: 'localUserId, email, onlineUserId',
     });
   }
 }

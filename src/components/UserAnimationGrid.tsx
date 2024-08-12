@@ -1,10 +1,11 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserAnimationsStore } from "@/stores/userAnimationStore";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import UserAnimationCard from "@/components/UserAnimationCard";
 import { UserAnimation } from "@/types/userAnimation";
-import { UploadIcon } from "lucide-react";
+import { RefreshCcw, UploadIcon } from "lucide-react";
+import { SyncModal } from "./SyncModal";
 
 type UserAnimationGridProps = {
   animations: UserAnimation[];
@@ -14,6 +15,8 @@ export default function UserAnimationGrid(props: UserAnimationGridProps) {
   const { animations } = props;
   const { setUploadedAnimation } = useUserAnimationsStore();
   const navigate = useNavigate();
+
+  const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -33,7 +36,6 @@ export default function UserAnimationGrid(props: UserAnimationGridProps) {
     }
   };
 
-
   const animationGrid = useMemo(
     () => (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -48,30 +50,36 @@ export default function UserAnimationGrid(props: UserAnimationGridProps) {
     ),
     [animations, navigate]
   );
-  
 
   return (
     <div className="flex flex-col gap-4">
-      
       <h2 className="text-2xl font-bold">Recently Uploaded</h2>
-      <div>
-        <input
-          type="file"
-          accept=".json"
-          onChange={handleFileUpload}
-          className="hidden"
-          id="lottie-upload"
-        />
-        <label
-          htmlFor="lottie-upload"
-          className={buttonVariants().concat("flex flex-row gap-4")}
-        >
-          <UploadIcon className="w-5" />{" "}
-          <span className="">Upload Animations</span>
-        </label>
+      <div className="flex flex-row gap-4">
+        <div>
+          <input
+            type="file"
+            accept=".json"
+            onChange={handleFileUpload}
+            className="hidden"
+            id="lottie-upload"
+          />
+          <label
+            htmlFor="lottie-upload"
+            className={buttonVariants().concat("flex flex-row gap-4")}
+          >
+            <UploadIcon className="w-5" />{" "}
+            <span className="">Upload Animations</span>
+          </label>
+        </div>
+        <Button variant={"outline"} className="flex flex-row gap-4" onClick={() => setIsSyncModalOpen(true)}>
+          <RefreshCcw className="w-5" /> Sync Animations
+        </Button>
       </div>
-      
       {animationGrid}
+      <SyncModal
+        isOpen={isSyncModalOpen}
+        onClose={() => setIsSyncModalOpen(false)}
+      />
     </div>
   );
 }
