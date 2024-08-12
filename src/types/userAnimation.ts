@@ -8,7 +8,6 @@ export interface UserAnimation {
   jsonContent: Animation;
   createdAt: string;
   updatedAt: string;
-  tags?: string[];
-  _status: "synced" | "created" | "updated" | "deleted" | "modified";
+  _status: "SYNCED" | "CREATED" | "UPDATED" | "DELETED" | "MODIFIED";
   _lastSyncedAt?: string;
 }

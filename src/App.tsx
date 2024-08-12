@@ -7,6 +7,7 @@ import LazyLoadingSkeleton from "@/components/LazyLoadingSkeleton";
 import { useUserStore } from "./stores/useStore";
 import { Button } from "./components/ui/button";
 import { AuthModal } from "./components/AuthModal";
+import { useUserAnimationsStore } from "./stores/userAnimationStore";
 
 const UserAnimation = React.lazy(() => import("@/pages/UserAnimation"));
 const UserAnimations = React.lazy(() => import("@/pages/UserAnimations"));
@@ -19,10 +20,18 @@ function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const { initializeLocalUser, isInitialized, signOut } = useUserStore();
+  const { loadAnimations } = useUserAnimationsStore()
+
 
   useEffect(() => {
     initializeLocalUser();
   }, []);
+
+  useEffect(() => {
+    if (localUser?.localUserId) {
+      loadAnimations(localUser.localUserId);
+    }
+  }, [loadAnimations, localUser]);
 
   const handleSignout = async () => {
     setIsSigningOut(true);
@@ -45,8 +54,6 @@ function App() {
   if (!isInitialized) {
     return <LazyLoadingSkeleton />;
   }
-
-  console.log(localUser);
 
   return (
     <div className="flex flex-col min-h-screen">

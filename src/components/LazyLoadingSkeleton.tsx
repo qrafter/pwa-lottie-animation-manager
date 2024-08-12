@@ -14,7 +14,6 @@ const SkeletonCard: React.FC = () => (
 );
 
 const LazyLoadingSkeleton: React.FC = () => {
-  console.log("LazyLoadingSkeleton.tsx");
   return (
     <div className="container mx-auto p-6">
       <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>

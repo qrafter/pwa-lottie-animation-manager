@@ -1,6 +1,6 @@
 import { UserAnimation } from "@/types/userAnimation";
-import { memo, useCallback } from "react";
-import Lottie from "react-lottie-player";
+import { memo } from "react";
+import Lottie from "react-lottie";
 
 type UserAnimationCardProps = {
   animation: UserAnimation;
@@ -11,9 +11,6 @@ const UserAnimationCard = memo(function AnimationCard({
   animation,
   onClick,
 }: UserAnimationCardProps) {
-  const handleLottieError = useCallback((error: unknown) => {
-    console.error("Lottie animation failed to load:", error);
-  }, []);
 
   return (
     <div
@@ -23,11 +20,12 @@ const UserAnimationCard = memo(function AnimationCard({
       <div className="relative h-40 p-4">
         {animation.jsonContent && (
           <Lottie
-            animationData={animation.jsonContent}
-            loop
-            play
+            options={{
+              loop: true,
+              autoplay: true,
+              animationData: animation.jsonContent,
+            }}
             style={{ width: "100%", height: "100%" }}
-            onError={handleLottieError}
           />
         )}
       </div>

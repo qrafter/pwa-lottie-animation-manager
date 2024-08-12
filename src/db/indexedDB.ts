@@ -16,8 +16,8 @@ class LottieAnimationManagerDatabase extends Dexie {
 
   constructor() {
     super("LottieAnimationManagerDatabase");
-    this.version(2).stores({
-      userAnimations: "id, userId, name, createdAt, updatedAt, _status, _lastSyncedAt",
+    this.version(3).stores({
+      userAnimations: "id, userId, [id+userId], name, createdAt, updatedAt, _status, _lastSyncedAt",
       users: 'localUserId, email, onlineUserId',
     });
   }

@@ -25,7 +25,7 @@ const UserAnimationPage: React.FC = () => {
       }
 
       try {
-        const fetchedAnimation = await getAnimation(localUser!.localUserId, id);
+        const fetchedAnimation = await getAnimation(id);
         if (fetchedAnimation) {
           setAnimation(fetchedAnimation);
         } else {
