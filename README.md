@@ -97,6 +97,10 @@ Lottie Animation Manager is a Progressive Web App (PWA) that allows users to sea
 
 This project is deployed on Vercel. You can view the live preview [here](https://pwa-lottie-animation-manager.vercel.app/).
 
+## Lightouse Report
+![Lighthouse Report](docs/lighthouse.png)
+
+
 ## Usage Guide
 
 1. **Viewing Animations**: Browse through the list of animations on the home page.
