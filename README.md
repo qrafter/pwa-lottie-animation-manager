@@ -1,5 +1,8 @@
 # Lottie Animation Manager
 
+
+
+
 ## Overview
 
 Lottie Animation Manager is a Progressive Web App (PWA) that allows users to search, preview, upload, and download Lottie Animations. It features robust offline capabilities, allowing users to interact with animations and access detailed metadata even without an internet connection.
